@@ -353,3 +353,14 @@ players.LocalPlayer.PlayerGui.hud.safezone.bodyannouncements.ChildAdded:Connect(
         v.question.Text = v.question.Text:gsub(".* is offering you", "")
     end
 end)
+
+-- spoof totems
+players.LocalPlayer.PlayerGui.hud.safezone.topannouncements.ChildAdded:Connect(function(v)
+    if v.Name == "ui" then
+        if v.FindFirstChild("Main") then
+            local x = v.Main.Text
+            local new = x:gsub(">(.-) used a", ">? used a", 1)
+            v.Main.Text = new
+        end
+    end
+end)

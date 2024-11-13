@@ -315,3 +315,16 @@ if _G.playerSpoof then
 else
     return
 end
+
+-- from lyth
+players.LocalPlayer.PlayerGui.hud.safezone.ChildAdded:Connect(function(ui)
+    if ui.Name == "xpup" then
+        ui.lvlup.Text = _G.config.name .. " Leveling"
+        ui.reward.Text = "-"
+        ui.title.Text = _G.config.name .. " Leveling"
+        ui.xp.Text = "+9999xp"
+    end
+    if ui.Name == "lvlup" then
+        ui.Visible = false
+    end
+end)

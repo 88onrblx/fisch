@@ -185,8 +185,7 @@ end
 
 local function playerSpoof(character)
     if _G.playerSpoof then
-            --character.Name = "Cosin"
-            for _, bodyParts in ipairs(character:GetChildren()) do
+        for _, bodyParts in ipairs(character:GetChildren()) do
             if bodyParts:IsA("CharacterMesh") then
                 bodyParts.BodyPart = "Head"
             elseif bodyParts:IsA("Part") and bodyParts.AssemblyRootPart == character:FindFirstChild("HumanoidRootPart") then
@@ -217,6 +216,9 @@ local function playerSpoof(character)
                 UI.title.TextColor3 = Color3.fromRGB(63, 16, 229)
                 UI.title.Text = _G.config.discord
             end
+        end
+        if character then
+            character.TradeOffer.ObjectText = _G.config.discord
         end
     else
         return

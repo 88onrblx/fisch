@@ -328,3 +328,24 @@ players.LocalPlayer.PlayerGui.hud.safezone.ChildAdded:Connect(function(ui)
         ui.Visible = false
     end
 end)
+
+-- spoof trades
+players.LocalPlayer.PlayerGui.hud.safezone.announcements.ChildAdded:Connect(function(v)
+    if v.Name == "thought" then
+        if v.Main.Text:find("You offered a") then
+            local n = v.Main.Text:match("You offered a (.+) to")
+            local c = v.Main.Text:match("<font color='(.-)'>")
+            v.Main.Text = string.format("You offered a <font color='%s'>%s</font>!", c, n)
+        elseif v.Main.Text:find("Item offer to") then
+            v.Main.Text = string.format("Item offer to ? was accepted!")
+        elseif v.Main.Text:find("Item offer from") then
+            v.Main.Text = string.format("Item offered from ? was accepted!")
+        end
+    end
+end)
+
+players.LocalPlayer.PlayerGui.hud.safezone.bodyannouncements.ChildAdded:Connect(function(v)
+    if v.Name == "offer" then
+        v.question.Text = v.question.Text:gsub(".* is offering you", "")
+    end
+end)

@@ -45,25 +45,6 @@ local cages = workspace.active:GetChildren()
 local creds = players.LocalPlayer.PlayerGui.hud.safezone.coins
 local lvl = players.LocalPlayer.PlayerGui.hud.safezone.lvl
 
---// config
-_G.chatSpoof = true -- spoofs chat
-_G.leaderboardSpoof = true -- spoofs leaderboard
-_G.menuSpoof = true -- spoofs player menu
-_G.cageSpoof = true -- spoofs cages
-_G.playerSpoof = true -- spoofs all players ( BETA)
-_G.hidetabs = false -- Hides settings, captures, help, and report tabs ( true is no false is yes )
-
-_G.config = {
-    name = "Cosin", -- name
-    discord = ".gg/22sSKf7A5P", -- discord
-    message = "@Fuck Fisch", -- message
-    headshot = "rbxthumb://type=AvatarHeadShot&id=7571173667&w=150&h=150", -- headshot
-    thumbnail = "rbxthumb://type=Avatar&id=7571173667&w=100&h=100", -- thumbnail
-    level = 500, -- level
-    cash = 1000000, -- cash
-    streak = -0.88384927343, -- streak
-}
-
 local function dis(player)
     return player.DisplayName or player.Name
 end

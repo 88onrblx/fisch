@@ -218,7 +218,9 @@ local function playerSpoof(character)
             end
         end
         if character then
-            character.TradeOffer.ObjectText = _G.config.discord
+            if character.TradeOffer then
+                character.TradeOffer.ObjectText = _G.config.discord
+            end
         end
     else
         return

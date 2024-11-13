@@ -357,10 +357,11 @@ end)
 -- spoof totems
 players.LocalPlayer.PlayerGui.hud.safezone.topannouncements.ChildAdded:Connect(function(v)
     if v.Name == "ui" then
-        if v.FindFirstChild("Main") then
+        if v:FindFirstChild("Main") then
             local x = v.Main.Text
             local new = x:gsub(">(.-) used a", ">? used a", 1)
             v.Main.Text = new
         end
     end
 end)
+

@@ -365,3 +365,4 @@ players.LocalPlayer.PlayerGui.hud.safezone.topannouncements.ChildAdded:Connect(f
     end
 end)
 
+

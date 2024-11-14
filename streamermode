@@ -219,18 +219,18 @@ local function playerSpoof(character)
         if root then
             local UI = root:FindFirstChild("user")
             if UI then
-                UI.level.Text = "Level: ".._G.config.level
-                UI.user.Text = _G.config.name
-                UI.streak.Text = _G.config.streak
+                UI.level.Text = "Level: "..(_G.config.level or "500")
+                UI.user.Text = _G.config.name or "Cosin"
+                UI.streak.Text = _G.config.streak or "100000"
                 UI.title.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Italic)
                 UI.title.TextColor3 = Color3.fromRGB(63, 16, 229)
-                UI.title.Text = _G.config.discord
+                UI.title.Text = _G.config.discord or ".gg/22sSKf7A5P"
                 
                 UI.level:GetPropertyChangedSignal("Text"):Connect(function()
-                    UI.level.Text = "Level: ".._G.config.level
+                    UI.level.Text = "Level: "..(_G.config.level or "500")
                 end)
                 UI.streak:GetPropertyChangedSignal("Text"):Connect(function()
-                    UI.streak.Text = _G.config.streak
+                    UI.streak.Text = _G.config.streak or "100000"
                 end)
                 UI.title:GetPropertyChangedSignal("FontFace"):Connect(function()
                     UI.title.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Italic)
@@ -239,17 +239,13 @@ local function playerSpoof(character)
                     UI.title.TextColor3 = Color3.fromRGB(63, 16, 229)
                 end)
                 UI.title:GetPropertyChangedSignal("Text"):Connect(function()
-                    UI.title.Text = _G.config.discord
+                    UI.title.Text = _G.config.discord or ".gg/22sSKf7A5P"
                 end)
             end
         end
-        if character then
-            if character.TradeOffer then
-                character.TradeOffer.ObjectText = _G.config.discord
-            end
+        if character and character:FindFirstChild("TradeOffer") then
+            character.TradeOffer.ObjectText = _G.config.discord or ".gg/22sSKf7A5P"
         end
-    else
-        return
     end
 end
 

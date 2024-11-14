@@ -365,23 +365,4 @@ players.LocalPlayer.PlayerGui.hud.safezone.topannouncements.ChildAdded:Connect(f
     end
 end)
 
--- spoof boats
-game.Workspace.active.boats.ChildAdded:Connect(function(v)
-    if v:IsA("Model") then
-        for _, child in pairs(v:GetChildren()) do
-            if child:FindFirstChild("owner") and child.owner:FindFirstChild("sitprompt") then
-                child.owner.sitprompt.ObjectText = _G.config.discord
-            end
-        end
-    end
-end)
 
-for _, v in pairs(game.Workspace.active.boats:GetChildren()) do
-    if v:IsA("Model") then
-        for _, child in pairs(v:GetChildren()) do
-            if child:FindFirstChild("owner") and child.owner:FindFirstChild("sitprompt") then
-                child.owner.sitprompt.ObjectText = _G.config.discord
-            end
-        end
-    end
-end

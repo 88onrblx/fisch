@@ -273,7 +273,7 @@ if _G.LEADERBOARD then
             if playerMenu.InnerFrame.Visible then plrMenu() end 
         end)
     else
-        warn("playerMenu or InnerFrame is nil")
+        warn("[0x3] Initialization failed, please click a player on the leaderboard and re-execute the script.")
     end
 else
     return

@@ -365,4 +365,25 @@ players.LocalPlayer.PlayerGui.hud.safezone.topannouncements.ChildAdded:Connect(f
     end
 end)
 
+-- spoof boats
+local servvech = workspace.active.boats
+servvech.ChildAdded:Connect(function(v)
+    if v:FindFirstChildOfClass("Model") then
+        local anme = v:FindFirstChildOfClass("Model")
+        if anme then
+            local mpt = anme.owner.sitprompt
+            task.wait(0.5)
+            mpt.ObjectText = _G.config.discord
+        end
+    end
+end)
+
+for _, boat in pairs(servvech:GetChildren()) do
+    for _, child in pairs(boat:GetChildren()) do
+        if child:FindFirstChild("owner") then
+            local mpt = child.owner.sitprompt
+            mpt.ObjectText = _G.config.discord
+        end
+    end
+end
 

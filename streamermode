@@ -148,11 +148,23 @@ local function plrMenu()
     end
 end
 
-robloxMenu.MenuContainer.HubBar.HubBarContainer.ReportAbuseTab.Visible = _G.TAB
-robloxMenu.MenuContainer.HubBar.HubBarContainer.CapturesTab.Visible = _G.TAB
-robloxMenu.MenuContainer.HubBar.HubBarContainer.HelpTab.Visible = _G.TAB
-robloxMenu.MenuContainer.HubBar.HubBarContainer.GameSettingsTab.Visible = _G.TAB
-robloxMenu.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame.Players.ImageButton.Visible = false
+if _G.TAB then
+    robloxMenu.MenuContainer.HubBar.HubBarContainer.ReportAbuseTab.Visible = false
+    robloxMenu.MenuContainer.HubBar.HubBarContainer.CapturesTab.Visible = false
+    robloxMenu.MenuContainer.HubBar.HubBarContainer.HelpTab.Visible = false
+    robloxMenu.MenuContainer.HubBar.HubBarContainer.GameSettingsTab.Visible = false
+else
+    robloxMenu.MenuContainer.HubBar.HubBarContainer.ReportAbuseTab.Visible = true
+    robloxMenu.MenuContainer.HubBar.HubBarContainer.CapturesTab.Visible = true
+    robloxMenu.MenuContainer.HubBar.HubBarContainer.HelpTab.Visible = true
+    robloxMenu.MenuContainer.HubBar.HubBarContainer.GameSettingsTab.Visible = true
+end
+
+if robloxMenu.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame.Players.ImageButton then
+    robloxMenu.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame.Players.ImageButton.Visible = false
+else
+    warn("[0x4] ImageButton does not exist.")
+end
 
 local function menuSpoof()
     if _G.MENU then

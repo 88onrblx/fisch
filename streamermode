@@ -10,10 +10,11 @@ local c = b:FindFirstChild("ChildrenFrame"):FindFirstChild("NameFrame").BGFrame
 local function init()
     vim:SendKeyEvent(true, Enum.KeyCode.Escape, false, game)
     vim:SendKeyEvent(false, Enum.KeyCode.Escape, false, game)
-    task.wait(.01)
+    task.wait(0.1)
     vim:SendKeyEvent(true, Enum.KeyCode.Escape, false, game)
     vim:SendKeyEvent(false, Enum.KeyCode.Escape, false, game)
 end
+
 local function init2()
     if c then
         local d = c.AbsolutePosition
@@ -26,9 +27,18 @@ local function init2()
         warn("[0x1] Failed to fix leaderboard bug, please click a player on the leaderboard and re-execute the script.")
     end
 end
-init()
-task.wait(.5)
-init2()
+
+if not core.RoactAppExperimentProvider.Children.Visible then
+    vim:SendKeyEvent(true, Enum.KeyCode.Tab, false, game)
+    vim:SendKeyEvent(false, Enum.KeyCode.Tab, false, game)
+    init()
+    task.wait(1.6)
+    init2()
+else
+    init()
+    task.wait(1.6)
+    init2()
+end
  
 --// vars
 local messages = core.ExperienceChat.appLayout.chatWindow.scrollingView.bottomLockedScrollView.RCTScrollView.RCTScrollContentView

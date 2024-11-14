@@ -14,7 +14,6 @@ local function init()
     vim:SendKeyEvent(true, Enum.KeyCode.Escape, false, game)
     vim:SendKeyEvent(false, Enum.KeyCode.Escape, false, game)
 end
-task.wait(.5)
 local function init2()
     if c then
         local d = c.AbsolutePosition
@@ -24,10 +23,11 @@ local function init2()
         vim:SendMouseButtonEvent(d.X, d.Y, 0, true, game, 1)
         vim:SendMouseButtonEvent(d.X, d.Y, 0, false, game, 1)
     else
-        warn("failed to fix bug")
+        warn("[0x1] Failed to fix leaderboard bug, please click a player on the leaderboard and re-execute the script.")
     end
 end
 init()
+task.wait(.5)
 init2()
  
 --// vars
@@ -37,7 +37,7 @@ local leaderboard = core.RoactAppExperimentProvider.Children.OffsetFrame.PlayerS
 if core.RoactAppExperimentProvider.Children.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer:FindFirstChild("PlayerDropDown") then
     playerMenu = core.RoactAppExperimentProvider.Children.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer:FindFirstChild("PlayerDropDown")
 else
-    warn("init failed")
+    warn("[0x2] Initialization failed, please click a player on the leaderboard and re-execute the script.")
     return
 end
 local robloxMenu = core.RobloxGui.SettingsClippingShield.SettingsShield
@@ -63,7 +63,7 @@ local o = {
 }
 
 local function chatSpoof(child)
-    if _G.chatSpoof then
+    if _G.CHAT then
         if child and child:IsA("Frame") then
             local txt = child:FindFirstChild("TextMessage")
             if txt then
@@ -100,7 +100,7 @@ local function chatSpoof(child)
 end
 
 local function leaderboardSpoof(lbPlayer)
-    if _G.leaderboardSpoof then
+    if _G.LEADERBOARD then
         local change = lbPlayer:FindFirstChild("ChildrenFrame")
         if change then   
             change.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName.Text = _G.config.discord
@@ -119,7 +119,7 @@ local function leaderboardSpoof(lbPlayer)
     end
 end
 
-if _G.leaderboardSpoof then
+if _G.LEADERBOARD then
     for _, row in ipairs(leaderboard:GetChildren()) do
         if row:IsA("Frame") then
             leaderboardSpoof(leaderboard:FindFirstChild(row.Name))
@@ -138,14 +138,14 @@ local function plrMenu()
     end
 end
 
-robloxMenu.MenuContainer.HubBar.HubBarContainer.ReportAbuseTab.Visible = _G.hidetabs
-robloxMenu.MenuContainer.HubBar.HubBarContainer.CapturesTab.Visible = _G.hidetabs
-robloxMenu.MenuContainer.HubBar.HubBarContainer.HelpTab.Visible = _G.hidetabs
-robloxMenu.MenuContainer.HubBar.HubBarContainer.GameSettingsTab.Visible = _G.hidetabs
+robloxMenu.MenuContainer.HubBar.HubBarContainer.ReportAbuseTab.Visible = _G.TAB
+robloxMenu.MenuContainer.HubBar.HubBarContainer.CapturesTab.Visible = _G.TAB
+robloxMenu.MenuContainer.HubBar.HubBarContainer.HelpTab.Visible = _G.TAB
+robloxMenu.MenuContainer.HubBar.HubBarContainer.GameSettingsTab.Visible = _G.TAB
 robloxMenu.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame.Players.ImageButton.Visible = false
 
 local function menuSpoof()
-    if _G.menuSpoof then
+    if _G.MENU then
         for _, child in pairs(robloxMenu.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame.Players:GetChildren()) do
             if child:IsA("ImageLabel") then
                 child.Name = "Player"
@@ -165,7 +165,7 @@ local function menuSpoof()
 end
 
 local function cageSpoof(cage)
-    if _G.cageSpoof then
+    if _G.CAGE then
         local prompt = cage:FindFirstChild("Prompt")
         if prompt and prompt:IsA("ProximityPrompt") then
             prompt.ObjectText = _G.config.discord
@@ -175,7 +175,7 @@ local function cageSpoof(cage)
     end
 end
 
-if _G.cageSpoof then
+if _G.CAGE then
     for _, cage in pairs(cages) do
         cageSpoof(cage)
     end
@@ -184,7 +184,7 @@ else
 end
 
 local function playerSpoof(character)
-    if _G.playerSpoof then
+    if _G.PLAYER then
         for _, bodyParts in ipairs(character:GetChildren()) do
             if bodyParts:IsA("CharacterMesh") then
                 bodyParts.BodyPart = "Head"
@@ -215,6 +215,22 @@ local function playerSpoof(character)
                 UI.title.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Italic)
                 UI.title.TextColor3 = Color3.fromRGB(63, 16, 229)
                 UI.title.Text = _G.config.discord
+                
+                UI.level:GetPropertyChangedSignal("Text"):Connect(function()
+                    UI.level.Text = "Level: ".._G.config.level
+                end)
+                UI.streak:GetPropertyChangedSignal("Text"):Connect(function()
+                    UI.streak.Text = _G.config.streak
+                end)
+                UI.title:GetPropertyChangedSignal("FontFace"):Connect(function()
+                    UI.title.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Italic)
+                end)
+                UI.title:GetPropertyChangedSignal("TextColor3"):Connect(function()
+                    UI.title.TextColor3 = Color3.fromRGB(63, 16, 229)
+                end)
+                UI.title:GetPropertyChangedSignal("Text"):Connect(function()
+                    UI.title.Text = _G.config.discord
+                end)
             end
         end
         if character then
@@ -228,7 +244,7 @@ local function playerSpoof(character)
 end
 
 --[ CHAT ]
-if _G.chatSpoof then
+if _G.CHAT then
     messages.ChildAdded:Connect(function(m1)
         chatSpoof(m1)
     end)
@@ -241,7 +257,7 @@ else
 end
 
 --[ LEADERBOARD ]
-if _G.leaderboardSpoof then
+if _G.LEADERBOARD then
     leaderboard.ChildAdded:Connect(function(child)
         if child:IsA("Frame") then leaderboardSpoof(child) end
     end)
@@ -258,7 +274,7 @@ else
 end
 
 --[ MENU ]
-if _G.menuSpoof then
+if _G.MENU then
     local plrF = robloxMenu.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame.Players
     plrF:GetPropertyChangedSignal("Visible"):Connect(function() 
         if plrF.Visible then 
@@ -271,7 +287,7 @@ else
 end
 
 --[ CAGE ]
-if _G.cageSpoof then
+if _G.CAGE then
     game.Workspace.active.ChildAdded:Connect(function(child)
         if child:IsA("Model") and child:FindFirstChild("Prompt") then
             table.insert(cages, child)
@@ -283,7 +299,7 @@ else
 end
 
 --[ PLAYER ]
-if _G.playerSpoof then
+if _G.PLAYER then
     for _, player in pairs(players:GetPlayers()) do
         if player.Character then
             playerSpoof(player.Character)
@@ -293,7 +309,7 @@ else
     return
 end
 
-if _G.playerSpoof then
+if _G.PLAYER then
     game.Workspace.ChildAdded:Connect(function(child)
         if child:IsA("Model") then
             playerSpoof(child)
@@ -321,69 +337,88 @@ else
 end
 
 -- from lyth
-players.LocalPlayer.PlayerGui.hud.safezone.ChildAdded:Connect(function(ui)
-    if ui.Name == "xpup" then
-        ui.lvlup.Text = _G.config.name .. " Leveling"
-        ui.reward.Text = "-"
-        ui.title.Text = _G.config.name .. " Leveling"
-        ui.xp.Text = "+9999xp"
-    end
-    if ui.Name == "lvlup" then
-        ui.Visible = false
-    end
-end)
-
--- spoof trades
-players.LocalPlayer.PlayerGui.hud.safezone.announcements.ChildAdded:Connect(function(v)
-    if v.Name == "thought" then
-        if v.Main.Text:find("You offered a") then
-            local n = v.Main.Text:match("You offered a (.+) to")
-            local c = v.Main.Text:match("<font color='(.-)'>")
-            v.Main.Text = string.format("You offered a <font color='%s'>%s</font>!", c, n)
-        elseif v.Main.Text:find("Item offer to") then
-            v.Main.Text = string.format("Item offer to ? was accepted!")
-        elseif v.Main.Text:find("Item offer from") then
-            v.Main.Text = string.format("Item offered from ? was accepted!")
+if _G.POPUPS then
+    players.LocalPlayer.PlayerGui.hud.safezone.ChildAdded:Connect(function(ui)
+        if ui.Name == "xpup" then
+            ui.lvlup.Text = _G.config.name .. " Leveling"
+            ui.reward.Text = "-"
+            ui.title.Text = _G.config.name .. " Leveling"
+            ui.xp.Text = "+9999xp"
         end
-    end
-end)
-
-players.LocalPlayer.PlayerGui.hud.safezone.bodyannouncements.ChildAdded:Connect(function(v)
-    if v.Name == "offer" then
-        v.question.Text = v.question.Text:gsub(".* is offering you", "")
-    end
-end)
-
--- spoof totems
-players.LocalPlayer.PlayerGui.hud.safezone.topannouncements.ChildAdded:Connect(function(v)
-    if v.Name == "ui" then
-        if v:FindFirstChild("Main") then
-            local x = v.Main.Text
-            local new = x:gsub(">(.-) used a", ">? used a", 1)
-            v.Main.Text = new
+        if ui.Name == "lvlup" then
+            ui.Visible = false
         end
-    end
-end)
-
--- spoof boats
-local servvech = workspace.active.boats
-servvech.ChildAdded:Connect(function(v)
-    if v:FindFirstChildOfClass("Model") then
-        local anme = v:FindFirstChildOfClass("Model")
-        if anme then
-            local mpt = anme.owner.sitprompt
-            task.wait(0.5)
-            mpt.ObjectText = _G.config.discord
-        end
-    end
-end)
-
-for _, boat in pairs(servvech:GetChildren()) do
-    for _, child in pairs(boat:GetChildren()) do
-        if child:FindFirstChild("owner") then
-            local mpt = child.owner.sitprompt
-            mpt.ObjectText = _G.config.discord
-        end
-    end
+    end)
+else
+    return
 end
 
+-- spoof trades
+if _G.TRADES then
+    players.LocalPlayer.PlayerGui.hud.safezone.announcements.ChildAdded:Connect(function(v)
+        if v.Name == "thought" then
+            if v.Main.Text:find("You offered a") then
+                local n = v.Main.Text:match("You offered a (.+) to")
+                local c = v.Main.Text:match("<font color='(.-)'>")
+                v.Main.Text = string.format("You offered a <font color='%s'>%s</font>!", c, n)
+            elseif v.Main.Text:find("Item offer to") then
+                v.Main.Text = string.format("Item offer to ? was accepted!")
+            elseif v.Main.Text:find("Item offer from") then
+                v.Main.Text = string.format("Item offered from ? was accepted!")
+            end
+        end
+    end)
+else
+    return
+end
+
+if _G.TRADES then
+    players.LocalPlayer.PlayerGui.hud.safezone.bodyannouncements.ChildAdded:Connect(function(v)
+        if v.Name == "offer" then
+        v.question.Text = v.question.Text:gsub(".* is offering you", "")
+        end
+    end)
+else
+    return
+end
+
+-- spoof totems
+if _G.TOTEMS then
+    players.LocalPlayer.PlayerGui.hud.safezone.topannouncements.ChildAdded:Connect(function(v)
+        if v.Name == "ui" then
+            if v:FindFirstChild("Main") then
+                local x = v.Main.Text
+                local new = x:gsub(">(.-) used a", ">? used a", 1)
+                v.Main.Text = new
+            end
+        end
+    end)
+else
+    return
+end
+
+-- spoof boats
+if _G.BOATS then
+    local servvech = workspace.active.boats
+    servvech.ChildAdded:Connect(function(v)
+        if v:FindFirstChildOfClass("Model") then
+            local anme = v:FindFirstChildOfClass("Model")
+            if anme then
+                local mpt = anme.owner.sitprompt
+                task.wait(0.5)
+                mpt.ObjectText = _G.config.discord
+            end
+        end
+    end)
+
+    for _, boat in pairs(servvech:GetChildren()) do
+        for _, child in pairs(boat:GetChildren()) do
+            if child:FindFirstChild("owner") then
+                local mpt = child.owner.sitprompt
+                mpt.ObjectText = _G.config.discord
+            end
+        end
+    end
+else
+    return
+end
